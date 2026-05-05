@@ -10,8 +10,8 @@
 // @homepage     https://github.com/QingFeng-awa/QZone-Beautification
 // @include       /^https?:\/\/[^/]*\.?qzone\.qq\.com\/.*$/
 // @match        https://i.qq.com/?s_url=http%3A%2F%2Fuser.qzone.qq.com%2*
-// @updateURL    https://github.com/QingFeng-awa/QZone-Beautification/raw/main/ulqzone.user.js
-// @downloadURL  https://github.com/QingFeng-awa/QZone-Beautification/raw/main/ulqzone.user.js
+// @updateURL    https://github.com/QingFeng-awa/QZone-Beautification/raw/main/qzone.user.js
+// @downloadURL  https://github.com/QingFeng-awa/QZone-Beautification/raw/main/qzone.user.js
 // @supportURL   https://github.com/QingFeng-awa/QZone-Beautification/issues
 // @license      AGPL-3.0
 // ==/UserScript==
