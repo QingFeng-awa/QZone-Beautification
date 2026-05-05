@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name         QQ 空间美化
 // @namespace    QingFeng-awa/QZone-Beautification
-// @version      1.0.0
+// @version      1.1.0
 // @description  forked from MFn233/Ultra-Lite-QZone，重新排版并移除了许多冗余元素，搭配Dark Reader使用更佳。调整空间主页排版至社交元素以取得最佳使用效果。
 // @icon         https://user.qzone.qq.com/favicon.ico
 // @grant        GM_addStyle
+// @grant        GM_registerMenuCommand
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @grant        unsafeWindow
 // @author       QingFeng
 // @homepage     https://github.com/QingFeng-awa/QZone-Beautification
@@ -16,18 +19,44 @@
 // @license      AGPL-3.0
 // ==/UserScript==
 
-//下为本user script设置（config）,修改后请按 ctrl + s 保存。
-//每次更新可能需要再次手动修改，但这比cookie好操作很多
 const config = {
     background: {
-        enable: true,//是否修改背景，true=是，false=否，下同
-        cover: true,//是否开启背景暗角
-        src: "https://i0.imgs.ovh/2024/02/02/bsxwl.jpeg"//图床：imgloc.com，这是背景路径，填写你的背景图直链，（应该）不支持file:/// .
+        get enable() { return GM_getValue('background_enable', true); },
+        set enable(value) { GM_setValue('background_enable', value); },
+        get cover() { return GM_getValue('background_cover', true); },
+        set cover(value) { GM_setValue('background_cover', value); },
+        src: "https://i0.imgs.ovh/2024/02/02/bsxwl.jpeg"
     },
     animation: {
-        transition: true//是否开启过渡动画（感觉好像没啥用的样子……）
+        get transition() { return GM_getValue('animation_transition', true); },
+        set transition(value) { GM_setValue('animation_transition', value); }
     }
 };
+
+// 注册菜单命令
+GM_registerMenuCommand('背景美化：' + (config.background.enable ? '✅ 开启' : '❌ 关闭'), () => {
+    config.background.enable = !config.background.enable;
+    location.reload(); // 切换后刷新页面以应用更改
+});
+
+GM_registerMenuCommand('背景暗角：' + (config.background.cover ? '✅ 开启' : '❌ 关闭'), () => {
+    config.background.cover = !config.background.cover;
+    location.reload();
+});
+
+GM_registerMenuCommand('过渡动画：' + (config.animation.transition ? '✅ 开启' : '❌ 关闭'), () => {
+    config.animation.transition = !config.animation.transition;
+    location.reload();
+});
+
+GM_registerMenuCommand('重置全部设置', () => {
+    if (confirm('确定要重置全部设置为默认值吗？')) {
+        GM_setValue('background_enable', true);
+        GM_setValue('background_cover', true);
+        GM_setValue('animation_transition', true);
+        location.reload();
+    }
+});
 
 (function () {
     'use strict';
@@ -73,11 +102,11 @@ const config = {
     GM_addStyle("div#_qz_zoom_detect {display: none;}");//奇怪的flash。。
     GM_addStyle(".fn-dialog-hide-feed {background: white;}");
 
-    if (config.animation.transition == true) {
+    if (config.animation.transition) {
         //过渡动画
         GM_addStyle("html{transition: all 0.5s ease-out;}");
     }
-    if (config.background.enable == true) {
+    if (config.background.enable) {
         //GM_addStyle(".bg-body:not(#pageApp), .layout-background:not(#pageApp), .layout-head, .layout-nav {z-index:-5; background: url("+ config.background.src +") fixed !important;}");
         //这个效果并不好，所以我使用了下面的方法
         //美化背景
@@ -86,7 +115,7 @@ const config = {
         document.body.append(bgimg);
         GM_addStyle(".bgimg {z-index: -5;position: fixed;left: 0;top: 0;width: 100%;height: 100%;background: url(" + config.background.src + ") fixed !important;}");
     }
-    if (config.background.cover == true) {
+    if (config.background.cover) {
         //背景暗角（来自limestart）
         let cover = document.createElement("div");
         cover.setAttribute("class", "cover");
