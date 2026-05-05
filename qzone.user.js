@@ -64,13 +64,6 @@ GM_registerMenuCommand('重置全部设置', () => {
     //登陆界面下方图标抖动bug。。。解决方式就是直接不位移
     GM_addStyle("ul#feed_friend_list {border: 1px #e6e6e6 solid !important;border-radius: 3px;background: white;width: fit-content;}");
     GM_addStyle(".fn-feed-control-v2 .control-inner {border: 1px #e6e6e6 solid !important;border-radius: 3px;background: white;}");
-    //主要部分边框重写，防止无背景时与背景相连
-    GM_addStyle(".bg-body{background-image:none !important;background-color:#dcdcdc;}");
-    GM_addStyle(".background-container{background-image:none !important;}");
-    //去除原本的背景图
-    GM_addStyle("a.qz-btn-vip.qz-btn-vip-open {visibility: hidden;}");
-    GM_addStyle(".profile-hd-actions{display: none !important;}");
-    GM_addStyle("i.ui-icon.icon-vip {display: none !important;}");
     //去VIP等
     GM_addStyle(".layout-nav .head-avatar {border: 1px #e6e6e6 solid !important;border-radius: 3px;bottom: 60px;");
     GM_addStyle("div#vipBottomAdContainer {display: none;}");
@@ -107,9 +100,13 @@ GM_registerMenuCommand('重置全部设置', () => {
         GM_addStyle("html{transition: all 0.5s ease-out;}");
     }
     if (config.background.enable) {
-        //GM_addStyle(".bg-body:not(#pageApp), .layout-background:not(#pageApp), .layout-head, .layout-nav {z-index:-5; background: url("+ config.background.src +") fixed !important;}");
-        //这个效果并不好，所以我使用了下面的方法
-        //美化背景
+        //主要部分边框重写，防止无背景时与背景相连
+        GM_addStyle(".bg-body{background-image:none !important;background-color:#dcdcdc;}");
+        GM_addStyle(".background-container{background-image:none !important;}");
+        //去除原本的背景图
+        GM_addStyle("a.qz-btn-vip.qz-btn-vip-open {visibility: hidden;}");
+        GM_addStyle(".profile-hd-actions{display: none !important;}");
+        GM_addStyle("i.ui-icon.icon-vip {display: none !important;}");
         let bgimg = document.createElement("div");
         bgimg.setAttribute("class", "bgimg");
         document.body.append(bgimg);
